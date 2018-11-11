@@ -11,8 +11,6 @@ import java.util.List;
 @Service
 public class ExampleFacadeService {
 
-    // Non-Blocking ------------------------------------------------------------
-
     public Mono<Person> getPerson(Long id){
         PersonsKeeper personsKeeper = new PersonsKeeper();
         List<Person> people = personsKeeper.getPersons();
@@ -25,8 +23,7 @@ public class ExampleFacadeService {
             }
         }
 
-        assert person != null;
-        return Mono.just(person);
+        return person != null ? Mono.just(person) : null;
     }
 
     public Mono<List<Person>> getPersons(){
