@@ -3,15 +3,40 @@ package io.github.samirsales.javareactorstudy.service;
 import io.github.samirsales.javareactorstudy.domain.Person;
 import io.github.samirsales.javareactorstudy.domain.PersonsKeeper;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 @Service
 public class ExampleFacadeService {
 
-    public List<Person> getPersons(){
+    // Non-Blocking ------------------------------------------------------------
+
+    public Mono<Person> getPerson(Long id){
         PersonsKeeper personsKeeper = new PersonsKeeper();
-        return personsKeeper.getPersons();
+        List<Person> people = personsKeeper.getPersons();
+        Person person = null;
+
+        for(Person p : people){
+            if(p.getId().equals(id)){
+                person = p;
+                break;
+            }
+        }
+
+        assert person != null;
+        return Mono.just(person);
+    }
+
+    public Mono<List<Person>> getPersons(){
+        PersonsKeeper personsKeeper = new PersonsKeeper();
+        return Mono.just(personsKeeper.getPersons());
+    }
+
+    public Flux<Person> getPersonsWithFlux(){
+        PersonsKeeper personsKeeper = new PersonsKeeper();
+        return Flux.fromIterable(personsKeeper.getPersons());
     }
 
 
