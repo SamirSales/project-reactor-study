@@ -1,5 +1,6 @@
 package io.github.samirsales.javareactorstudy.service;
 
+import io.github.samirsales.javareactorstudy.domain.Animal;
 import io.github.samirsales.javareactorstudy.domain.Person;
 import io.github.samirsales.javareactorstudy.domain.PersonsKeeper;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,15 @@ public class ExampleFacadeService {
         return Flux.fromIterable(personsKeeper.getPersons());
     }
 
+    public Mono<?> getAnimalsOfPerson(Long personId) {
+
+        return this.getPerson(personId).flatMap(person1 -> {
+            if (person1 != null) {
+                return Mono.just(person1.getAnimals());
+            }
+
+            return Mono.empty();
+        });
+    }
 
 }

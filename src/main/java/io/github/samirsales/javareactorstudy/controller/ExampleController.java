@@ -1,5 +1,6 @@
 package io.github.samirsales.javareactorstudy.controller;
 
+import io.github.samirsales.javareactorstudy.domain.Animal;
 import io.github.samirsales.javareactorstudy.domain.Person;
 import io.github.samirsales.javareactorstudy.service.ExampleFacadeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -29,8 +31,8 @@ public class ExampleController {
 
         DeferredResult<HttpEntity<?>> response = new DeferredResult<>();
 
-        Consumer<Person> onSuccess = campaignResult -> response
-                .setResult(new ResponseEntity<>(campaignResult, HttpStatus.OK));
+        Consumer<Person> onSuccess = personResult -> response
+                .setResult(new ResponseEntity<>(personResult, HttpStatus.OK));
 
         Consumer<Throwable> onError = throwable -> {
             System.out.println("Failed to catch person. [id="+id+"]");
@@ -45,6 +47,11 @@ public class ExampleController {
         }
 
         return response;
+    }
+
+    @RequestMapping(value = "/animals/{personId}", method = RequestMethod.GET)
+    public Mono<?> getAnimalsOfPerson(@PathVariable("personId") Long personId){
+        return facadeService.getAnimalsOfPerson(personId);
     }
 
 
