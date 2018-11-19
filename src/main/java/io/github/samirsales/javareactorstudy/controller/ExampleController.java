@@ -50,7 +50,7 @@ public class ExampleController {
     }
 
     @RequestMapping(value = "/animals/{personId}", method = RequestMethod.GET)
-    public Mono<?> getAnimalsOfPerson(@PathVariable("personId") Long personId){
+    public Mono<List<Animal>> getAnimalsOfPerson(@PathVariable("personId") Long personId){
         return facadeService.getAnimalsOfPerson(personId);
     }
 

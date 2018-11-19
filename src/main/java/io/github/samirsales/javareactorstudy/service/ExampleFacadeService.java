@@ -37,10 +37,10 @@ public class ExampleFacadeService {
         return Flux.fromIterable(personsKeeper.getPersons());
     }
 
-    public Mono<?> getAnimalsOfPerson(Long personId) {
+    public Mono<List<Animal>> getAnimalsOfPerson(Long personId) {
 
         return this.getPerson(personId).flatMap(person1 -> {
-            if (person1 != null) {
+            if (person1 != null && person1.getAnimals() != null) {
                 return Mono.just(person1.getAnimals());
             }
 
